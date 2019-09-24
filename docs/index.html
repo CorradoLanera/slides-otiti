@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Automatic identification and classification of different types of otitis from free-text pediatric medical notes in the Italian language: a deep-learning approach</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Corrado Lanera" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, and title-slide
+background-image: url("images/bg.png")
+background-position: top
+background-size: contain
+
+
+
+# Automatic identification and classification of different types of otitis from free-text pediatric medical notes in the Italian language: a deep-learning approach
+
+**Corrado Lanera**\*&lt;sup&gt;1&lt;/sup&gt;, Elisa Barbieri&lt;sup&gt;2&lt;/sup&gt;, Gianluca Piras&lt;sup&gt;1&lt;/sup&gt;, Arjun Maggie&lt;sup&gt;3&lt;/sup&gt;, Davy Weissenbacher&lt;sup&gt;3&lt;/sup&gt;, Daniele Dona&lt;sup&gt;2&lt;/sup&gt;, Luigi Cantarutti&lt;sup&gt;4&lt;/sup&gt;, Graciela Gonzalez&lt;sup&gt;3&lt;/sup&gt;,&lt;br&gt;Carlo Giaquinto&lt;sup&gt;2,4&lt;/sup&gt;, and Dario Gregori&lt;sup&gt;1&lt;/sup&gt;
+
+.left[
+&lt;small&gt;&lt;small&gt;\*&lt;corrado.lanera@unipd.it&gt;&lt;br&gt;&lt;br&gt;&lt;/small&gt;&lt;/small&gt;
+2019/09/25 - HLP Center @UPenn
+]
+
+
+
+&lt;br&gt;
+&lt;br&gt;
+
+.left[
+&lt;small&gt;
+&lt;small&gt;
+&lt;small&gt;
+&lt;small&gt;
+&lt;sup&gt;1&lt;/sup&gt; Unit of Biostatistics, Epidemiology, and Public Health of the Department of Cardiac-Thoracic-Vascular Sciences and Public Health – University of Padova&lt;br&gt;
+&lt;sup&gt;2&lt;/sup&gt; Division of Pediatric Infectious Diseases, Department for Woman and Child Health, University of Padua, Padua, Italy&lt;br&gt;
+&lt;sup&gt;3&lt;/sup&gt; Health Language Processing Center, Institute for Biomedical Informatics of the Perelman School of Medicine – University of Pennsylvania&lt;br&gt;
+&lt;sup&gt;4&lt;/sup&gt; Società Servizi Telematici – Pedianet&lt;br&gt;
+&lt;/small&gt;
+&lt;/small&gt;
+&lt;/small&gt;
+&lt;/small&gt;
+]
+
+
+
+
+---
+class: inverse, middle
+# Outline
+
+Overview: classification of otitis
+
+Task: multi-class classification
+
+Database:&lt;img src="images/logopedianet.png", width = "20%", align = "center"&gt;
+
+Metrics: scores and human-performances
+
+Project plan: flowchart
+
+Deep-learning approach: architecture explored
+
+Results
+
+Conclusions
+
+
+
+
+---
+class: center, middle, inverse
+# **Overview**&lt;br&gt;classification of otitis
+
+
+
+
+---
+class: middle
+
+.pull-left[
+one of the most common infections in pediatrics ...
+
+&lt;img src="images/Otitis_Media.png", width = "90%", align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;https://commons.wikimedia.org/wiki/File:Otitis_Media.png&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+]
+
+.pull-right[
+... and the main cause of antibiotic prescriptions 
+
+_[...] diagnosis is often challenging in everyday
+practice because the symptoms are non-specific or
+absent, and frequently little attention is paid to the
+issued guidelines._
+
+_[...] there has been a continuing interest in
+defining the incidence and burden of AOM in different
+populations, including those in which the offer and
+coverage of heptavalent pneumococcal conjugate vaccine
+has been considerably heterogeneous_*
+]
+
+.footnote[&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;\*Marchisio P. et al. "Burden of acute otitis media in primary care pediatrics in Italy: a secondary data analysis from the Pedianet database", **BMC Pediatrics** 2012.&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;]
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Task**&lt;br&gt;multi-class classification
+
+
+
+
+---
+class: middle
+
+Based on data provided in the EHRs at the visit level, decide if it reports:
+
+&lt;small&gt;
+1. whatever other than an otitis case
+1. an otitis case which is not media (whatever severity)
+1. a media otitis which is not acute
+1. &lt;img src="images/aom.jpg", width = "20%", align = "center"&gt;
+  an AOM (w/o tympanic membrane perforation, nor recurrent)
+
+1. &lt;img src="images/aom_perforation.jpg", width = "20%", align = "center"&gt;
+  an AOM with tympanic membrane perforation
+1. a recurrent AOM
+&lt;/small&gt;
+
+.footnote[&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;http://otitismedia.hawkelibrary.com&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;]
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Database**&lt;br&gt;&lt;img src="images/logopedianet.png", width = "40%", align = "center"&gt;
+
+
+
+
+---
+class: middle
+
+&lt;img src="images/logopedianet.png", width = "20%", align = "center"&gt;
+
+**snapshot considerd**: from 1st January 2004 to 23rd August 2017
+
+**records**: `\(6,903,035\)`
+
+**pediatricians**: `\(144\)` (troughout Italy)
+
+**children**: `\(216,976\)`
+
+**fields** (all free-text, Italian-language):
+  - diagnosis
+  - signs-and-symptoms
+  - diary
+  - prescription
+  - visit description
+  - visit result
+
+Investigated in 2012 by Barbieri E. et al. 2018\* on data from 2010 to
+2015 for similar task **on primary diagnosis only**: adding even the 
+diaries in a traditional manual human-driven analysis proved to be too
+costly in terms both of person-time (years) and economic resources
+
+It is necessary to develop a **accurate** system able to classify all
+the Pedianet records **automatically** investigating **all the textual
+fields** in the database.
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Metrics**&lt;br&gt;scores and human-performances
+
+
+
+
+---
+class: middle
+
+Gold-standard definition:
+  - two independent expert annotators (weighted Cohen''s Kappa = `\(0.89\)`)
+  - one pediatrician specialized in infectious diseases decided on the differences:*
+
+Expert annotators | Accuracy [%] | Balanced F1 [%]
+:--------------: | :----------: | :-------------:
+       A         |     95.91    |       93.47
+       B         |     95.80    |       90.12
+
+
+
+`\(\text{Accuracy} = \frac{|\text{true positives}|}{|\text{records}|}\)`
+
+`\(\text{Balanced F1} = \frac{\text{balanced precision} * \text{balanced recall}}{\text{balanced precision} + \text{balanced recall}}\)`
+
+`\(\text{Balanced precision} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true positives in }i|}{|\text{labelled like }i|}}{|\text{classes}|}\)`
+
+`\(\text{Balanced precision} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true positives in }i|}{|\text{class }i|}}{|\text{classes}|}\)`
+
+
+.pull-right[&lt;small&gt;&lt;small&gt;
+  *Performances reported for the test set.
+&lt;/small&gt;&lt;/small&gt;]
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Analysis plan**&lt;br&gt;flowchart
+
+
+
+
+---
+class: center, middle
+&lt;img src="images/flowchart_otiti.png", width = "60%", align = "center"&gt;
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Deep-learning approach**&lt;br&gt;architecture explored
+
+
+
+---
+class: top
+
+&lt;img src="images/200.png", width = "14%", align = "top"&gt;
+&lt;img src="images/310.png", width = "14%", align = "top"&gt;
+&lt;img src="images/320.png", width = "13.5%", align = "top"&gt;
+&lt;img src="images/330.png", width = "25%", align = "top"&gt;
+&lt;img src="images/340.png", width = "24.5%", align = "top"&gt;
+
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Results**
+
+
+
+
+---
+class: middle
+
+Network          | Balanced&lt;br&gt;precision | Balanced&lt;br&gt;recall |  Accuracy | Balanced&lt;br&gt;F1
+---------------- | :-------------------: | :----------------: |  :------: | :------------:
+Simple embedding |         84.51         |        68.63       |   81.70   |      75.75
+single kernel    |         92.60         |       _91.87_      |   94.66   |     _92.23_
+sequential CNN   |        _95.94_        |        81.26       |   93.64   |      87.99
+parallel CNN     |       **96.95**       |       _94.78_      | **96.59** |    **95.86**
+deep CNN         |       **96.38**       |       _93.36_      | **96.25** |    **94.85**
+Ensemble&lt;br&gt;(w/o simple embeddings)|**97.03**|   _93.97_      | **96.59** |    **95.47**
+
+.pull-right[
+  \* **Bold face** = over the maximum &lt;br&gt;
+  \* _italic_ = over the mean
+]
+
+  Annotators     | Balanced&lt;br&gt;precision | Balanced&lt;br&gt;recall |  Accuracy | Balanced&lt;br&gt;F1
+:--------------: | :-------------------: | :----------------: |  :------: | :------------:
+       A         |         91.70         |        95.30       |    95.91  |      93.47 
+       B         |         96.33         |        84.66       |    95.80  |      90.12 
+    (mean)       |        (94.02)        |       (89.98)      |   (95.86) |     (91.80)
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Conclusions**
+
+
+
+
+---
+class: middle
+
+- Potential of deep learning models in identifying and classifying
+  diagnosis from free text
+  
+- Could be adopted in other health care databases
+- Can improve healthcare research limiting human errors and time
+  speeding databases interrogations
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Final remarks**
+
+
+
+
+---
+class: middle, center
+
+.pull-left[
+# Strenghts
+- embedding: no more needs to hand-crafting features
+- deep learning:
+  - automatical detection and modeling of non linearities and
+    interactions
+  - update models w/ new data
+  - use pre-trained or merge multiple models
+  - can take advantage of more data than shallow models
+]
+
+.pull-right[
+# Weakness
+- human-performance not based on professionals levels
+- missing computational power (i.e, GPUs) for
+  - Recurrent networks
+  - BERT
+  - XLNet
+  - ...
+]
+
+
+
+
+---
+class: center, middle, inverse
+&lt;br&gt;
+&lt;br&gt;
+
+# **Thank you all&lt;br&gt;for the attention&lt;br&gt;the hospitality&lt;br&gt;&lt;br&gt;and to have made all this possible!**&lt;br&gt;&lt;br&gt;&lt;br&gt; (Questions?)
+
+&lt;br&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan) powered by [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

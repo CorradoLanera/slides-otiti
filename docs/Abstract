@@ -1,0 +1,10 @@
+Title: Automatic identification and classification of different types of otitis from free-text pediatric medical notes in the Italian language: a deep-learning approach
+
+Abstract:
+INTRODUCTION: There is a high clinical interest in the detection and classification of otitis being one of the most common infections in pediatrics and the main cause of antibiotic prescriptions. Daily diaries are useful for pediatricians to record a more exhaustive status of their patients. However, using the very same diaries in a traditional manual human-driven analysis proved to be costly in terms both of person-time (years) and economic resources. The present work aims to develop an automatic machine learning system trained to classify all the Pedianet records in six mutually excluding category: non-otitis, otitis, otitis media, acute otitis media (AOM), AOM with tympanic membrane perforation or recurrent AOM.
+
+METHODOLOGY: Data used comes from a snapshot of the Pedianet database containing 6,903,035 pediatric visits starting from 1st January 2004 to 23rd August 2017 from 144 family pediatricians throughout Italy. A gold standard composed by 4,928 records for training, 723 records for validation and 880 records for tests was developed with a high rate of agreement between two expert evaluators (0.89 weighted Cohen’s kappa). A pediatrician specialized in infectious diseases validated the gold standard and permitting to estimate the expert evaluators’ performances too. Six deep-learning architectures were explored and tuned on the validation set. With the best model trained from them an ensembled model was defined.
+
+RESULTS: the ensemble model reached 96.59% of accuracy with 95.47% of balanced F1 score through the classes. Both those measures are over the highest of their corresponding expert evaluator ones, i.e. 95.91% and 93.47% respectively
+
+CONCLUSION: Our analysis confirmed the potential of deep learning models in identifying and classifying diagnosis from free text. These methodologies could be adopted in other health care databases and can improve healthcare research limiting human errors and time speeding databases interrogations.
