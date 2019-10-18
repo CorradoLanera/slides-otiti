@@ -105,9 +105,9 @@ Project plan: flowchart
 
 Deep-learning approach: architectures explored
 
-Conclusions
-
 Results
+
+Final remarks and conclusions
 
 
 ???
@@ -191,19 +191,23 @@ class: middle
 
 Based on data provided in the EHRs at the visit level, decide if it reports:
 
-1. whatever other than an otitis case
 
-1. an otitis case which is not media (whatever severity)
+&lt;ol start="0"&gt;
 
-1. a media otitis which is not acute
+&lt;li&gt;whatever other than an otitis case&lt;/li&gt;&lt;br&gt;
 
-1. &lt;img src="images/aom.jpg", width = "20%", align = "center"&gt;
-  an AOM (w/o tympanic membrane perforation, nor recurrent)
+&lt;li&gt;an otitis case which is not media (whatever severity)&lt;/li&gt;&lt;br&gt;
+
+&lt;li&gt;a media otitis which is not acute&lt;/li&gt;&lt;br&gt;
+
+&lt;li&gt;&lt;img src="images/aom.jpg", width = "15%", align = "center"&gt;
+  an AOM (w/o tympanic membrane perforation, nor recurrent)&lt;/li&gt;&lt;br&gt;
   
-1. &lt;img src="images/aom_perforation.jpg", width = "20%", align = "center"&gt;
-  an AOM with tympanic membrane perforation
+&lt;li&gt;&lt;img src="images/aom_perforation.jpg", width = "15%", align = "center"&gt;
+  an AOM with tympanic membrane perforation&lt;/li&gt;&lt;br&gt;
 
-1. a recurrent AOM
+&lt;li&gt;a recurrent AOM&lt;/li&gt;
+&lt;/ol&gt;
 
 .pull-right[
 .footnote[&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;http://otitismedia.hawkelibrary.com&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;]
@@ -224,9 +228,9 @@ class: center, middle, inverse
 ---
 class: middle
 
-&lt;img src="images/barbieri2019.png", width = "50%", align = "right"&gt;
+&lt;img src="images/barbieri2019.png", width = "32%", align = "right"&gt;
 
-&lt;big&gt;
+&lt;big&gt;&lt;big&gt;
 
 2019 &lt;img src="images/logopedianet.png", width = "20%", align = "center"&gt; investigation
 
@@ -235,14 +239,14 @@ class: middle
 - **on primary diagnosis only**
 
 Adding even the diaries in a traditional manual human-driven analysis proved to be 
-too costly in terms both of person-time and economic resources
+**too costly** in terms both of person-time and economic resources
 
 
 It is necessary to develop an **accurate** system able to classify all
 the &lt;img src="images/logopedianet.png", width = "15%", align = "center"&gt; records **automatically** investigating **all the textual
 fields** in the database.
 
-&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;\*Barbieri et.al "Antibiotic prescriptions in acute otitis media and pharyngitis in Italian pediatric outpatients", **Italian Journal of Pediatrics** 2019&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;\*Barbieri et.al "Antibiotic prescriptions in acute otitis media and pharyngitis in Italian pediatric outpatients", **Italian J. of Pediatrics** 2019&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
 
 
 ???
@@ -295,13 +299,13 @@ Records: `\(4,926\)`
 
 .pull-right[
 ## **Validation**
-Years: `\(2007-2014\)`
+Years: `\(2008-2017\)`
 
 Records: `\(723\)`
 ]
 
 ## **Test**
-Years: `\(2007-2014\)`
+Years: `\(2008-2017\)`
 
 Records: `\(880\)`
 
@@ -439,8 +443,8 @@ class: center, middle, inverse
 class: middle
 
 .pull-left[
-# Strenghts
-- embedding: no more needs to hand-crafting features
+## .center[Strenghts]
+- embedding: no more needs to hand-craft features
 - deep learning:
   - automatical detection and modeling of non linearities and
     interactions
@@ -450,18 +454,23 @@ class: middle
 ]
 
 .pull-right[
-# Weakness
+## .center[Weakness]
 - our human-performance estimation is not based at the professional levels
-- missing computational power (i.e, GPUs) for deeper networks, e.g., 
+- missing of computational power (i.e, GPUs) for deeper networks, e.g., 
 
-  - Recurrent
-
+  - recurrent
   - BERT
-
   - XLNet
 ]
 
+## .center[Possible improvement]
 
+- improve the gold standard:
+  - quality  (human-performance level)
+  - accuracy (error analyses)
+  - quantity (more training records / active learning)
+- deeper networks / advanced architectures
+- different weighting schemes for the ensamble
 
 ---
 class: center, middle, inverse
@@ -478,10 +487,10 @@ class: middle
 - Can be used to identifying and classifying diagnosis from (huge
   ammount of) free text
   
-- Similar quality respect human-performances
+- Quality comparable with human-performances
 
-- Trained models can be adopted on other health care databases with
-respect to the original one
+- Trained models can be adopted on other health care databases,
+  different from the original one
 
 - It can improve healthcare research limiting human errors and time,
 speeding up databases interrogations

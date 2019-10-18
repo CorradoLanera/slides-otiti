@@ -111,9 +111,9 @@ Project plan: flowchart
 
 Deep-learning approach: architectures explored
 
-Conclusions
-
 Results
+
+Final remarks and conclusions
 
 
 ???
@@ -197,19 +197,23 @@ class: middle
 
 Based on data provided in the EHRs at the visit level, decide if it reports:
 
-1. whatever other than an otitis case
 
-1. an otitis case which is not media (whatever severity)
+<ol start="0">
 
-1. a media otitis which is not acute
+<li>whatever other than an otitis case</li><br>
 
-1. <img src="images/aom.jpg", width = "20%", align = "center">
-  an AOM (w/o tympanic membrane perforation, nor recurrent)
+<li>an otitis case which is not media (whatever severity)</li><br>
+
+<li>a media otitis which is not acute</li><br>
+
+<li><img src="images/aom.jpg", width = "15%", align = "center">
+  an AOM (w/o tympanic membrane perforation, nor recurrent)</li><br>
   
-1. <img src="images/aom_perforation.jpg", width = "20%", align = "center">
-  an AOM with tympanic membrane perforation
+<li><img src="images/aom_perforation.jpg", width = "15%", align = "center">
+  an AOM with tympanic membrane perforation</li><br>
 
-1. a recurrent AOM
+<li>a recurrent AOM</li>
+</ol>
 
 .pull-right[
 .footnote[<small><small><small><small>http://otitismedia.hawkelibrary.com</small></small></small></small>]
@@ -230,9 +234,9 @@ class: center, middle, inverse
 ---
 class: middle
 
-<img src="images/barbieri2019.png", width = "50%", align = "right">
+<img src="images/barbieri2019.png", width = "32%", align = "right">
 
-<big>
+<big><big>
 
 2019 <img src="images/logopedianet.png", width = "20%", align = "center"> investigation
 
@@ -241,14 +245,14 @@ class: middle
 - **on primary diagnosis only**
 
 Adding even the diaries in a traditional manual human-driven analysis proved to be 
-too costly in terms both of person-time and economic resources
+**too costly** in terms both of person-time and economic resources
 
 
 It is necessary to develop an **accurate** system able to classify all
 the <img src="images/logopedianet.png", width = "15%", align = "center"> records **automatically** investigating **all the textual
 fields** in the database.
 
-<small><small><small><small>\*Barbieri et.al "Antibiotic prescriptions in acute otitis media and pharyngitis in Italian pediatric outpatients", **Italian Journal of Pediatrics** 2019</small></small></small></small>
+<small><small><small><small><small><small>\*Barbieri et.al "Antibiotic prescriptions in acute otitis media and pharyngitis in Italian pediatric outpatients", **Italian J. of Pediatrics** 2019</small></small></small></small></small></small>
 
 
 ???
@@ -301,13 +305,13 @@ Records: $4,926$
 
 .pull-right[
 ## **Validation**
-Years: $2007-2014$
+Years: $2008-2017$
 
 Records: $723$
 ]
 
 ## **Test**
-Years: $2007-2014$
+Years: $2008-2017$
 
 Records: $880$
 
@@ -445,8 +449,8 @@ class: center, middle, inverse
 class: middle
 
 .pull-left[
-# Strenghts
-- embedding: no more needs to hand-crafting features
+## .center[Strenghts]
+- embedding: no more needs to hand-craft features
 - deep learning:
   - automatical detection and modeling of non linearities and
     interactions
@@ -456,18 +460,23 @@ class: middle
 ]
 
 .pull-right[
-# Weakness
+## .center[Weakness]
 - our human-performance estimation is not based at the professional levels
-- missing computational power (i.e, GPUs) for deeper networks, e.g., 
+- missing of computational power (i.e, GPUs) for deeper networks, e.g., 
 
-  - Recurrent
-
+  - recurrent
   - BERT
-
   - XLNet
 ]
 
+## .center[Possible improvement]
 
+- improve the gold standard:
+  - quality  (human-performance level)
+  - accuracy (error analyses)
+  - quantity (more training records / active learning)
+- deeper networks / advanced architectures
+- different weighting schemes for the ensamble
 
 ---
 class: center, middle, inverse
@@ -484,10 +493,10 @@ class: middle
 - Can be used to identifying and classifying diagnosis from (huge
   ammount of) free text
   
-- Similar quality respect human-performances
+- Quality comparable with human-performances
 
-- Trained models can be adopted on other health care databases with
-respect to the original one
+- Trained models can be adopted on other health care databases,
+  different from the original one
 
 - It can improve healthcare research limiting human errors and time,
 speeding up databases interrogations
