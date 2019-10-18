@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
-    <title>Automatic identification and classification of different types of otitis from free-text pediatric medical notes in the Italian language: a deep-learning approach</title>
+    <title>Automatic identification and classification of different types of otitis from free-text pediatric medical notes: a deep-learning approach</title>
     <meta charset="utf-8" />
     <meta name="author" content="Corrado Lanera" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -17,13 +17,13 @@ background-size: contain
 
 
 
-# Automatic identification and classification of different types of otitis from free-text pediatric medical notes in the Italian language: a deep-learning approach
+# Automatic identification and classification of different types of otitis from&lt;br&gt;free-text pediatric medical notes:&lt;br&gt;a deep-learning approach
 
 **Corrado Lanera**\*&lt;sup&gt;1&lt;/sup&gt;, Elisa Barbieri&lt;sup&gt;2&lt;/sup&gt;, Gianluca Piras&lt;sup&gt;1&lt;/sup&gt;, Arjun Maggie&lt;sup&gt;3&lt;/sup&gt;, Davy Weissenbacher&lt;sup&gt;3&lt;/sup&gt;, Daniele Dona&lt;sup&gt;2&lt;/sup&gt;, Luigi Cantarutti&lt;sup&gt;4&lt;/sup&gt;, Graciela Gonzalez&lt;sup&gt;3&lt;/sup&gt;,&lt;br&gt;Carlo Giaquinto&lt;sup&gt;2,4&lt;/sup&gt;, and Dario Gregori&lt;sup&gt;1&lt;/sup&gt;
 
 .left[
-&lt;small&gt;&lt;small&gt;\*&lt;corrado.lanera@unipd.it&gt;&lt;br&gt;&lt;br&gt;&lt;/small&gt;&lt;/small&gt;
-2019/09/25 - HLP Center @UPenn
+&lt;small&gt;\*&lt;corrado.lanera@unipd.it&gt;&lt;br&gt;&lt;br&gt;&lt;/small&gt;
+2019/10/19 - YSM (Basoviza)
 ]
 
 
@@ -47,6 +47,46 @@ background-size: contain
 ]
 
 
+???
+
+Good moarning, I am Corrado Lanera and I have just finished my third
+year Ph.D. at the Unit of Biostatistics, Epidemiology and Public Health,
+at the University of Padova.
+
+Today I will present you an **overview of the final work** inlcuded in my 
+dissertation, that aims to identify and classsify different types of 
+otitis automatically and using only free-text from prediatric medical 
+reports. 
+
+This is a **joint work with** three other groups:
+ 
+ - the **Pedianet** society which collected and provided the data;
+ - the **Division of Pediatric Infectious Diseases** of the university
+   of Padova which created the gold standard, motivated the study and 
+   analyzed the results from the clinical point of view
+   
+ - and **Health Language Processing Center** at the University of
+   Pennsylvania, in wich I have spent my visiting period during the
+   Ph.D., and where I have developed all the computational aspects of 
+   the analyses
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ---
@@ -63,12 +103,30 @@ Metrics: scores and human-performances
 
 Project plan: flowchart
 
-Deep-learning approach: architecture explored
-
-Results
+Deep-learning approach: architectures explored
 
 Conclusions
 
+Results
+
+
+???
+
+So, we will start with a quick overview on the otitis and the importance
+of their classification.
+
+Next, we will describe which classes we are interested to classify and 
+we will explore the main details of the database we used.
+
+To evaluate any models, we need some metrics, so, before to describe the
+flowchart we adopted for the analyses, we will explore teh metrics and 
+the reference we considered.
+
+After that we will show the deep-learning architectures explored and 
+trained to create teh final ensamble model.
+
+At the end we conclude reporting the results achieved, concluding with 
+some highlights.
 
 
 
@@ -82,37 +140,44 @@ class: center, middle, inverse
 ---
 class: middle
 
-.pull-left[
-one of the most common infections in pediatrics ...
+&lt;img src="images/Otitis_Media.png", width = "75%", align = "right"&gt;
 
-&lt;img src="images/Otitis_Media.png", width = "90%", align = "center"&gt;
+- one of the most common infections in pediatrics
+  
+- the main cause of antibiotic prescriptions
 
+- challenging diagnosis
+
+- frequently, little attention is paid to the guidelines
+
+- continuing interest in defining the incidence and burden of AOM
+
+.right[
+&lt;br&gt;
 &lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;https://commons.wikimedia.org/wiki/File:Otitis_Media.png&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+&lt;br&gt;
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;\*Marchisio P. et al. "Burden of acute otitis media in primary care pediatrics in Italy: a secondary data analysis from the Pedianet database", **BMC Pediatrics** 2012.&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+&lt;br&gt;
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;\*Spiro DM, Arnold, DH. "The concept and practice of a wait-and-see approach to acute otitis media.", **Current Opinion in Pediatrics** 2008&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
 ]
 
-.pull-right[
-... and the main cause of antibiotic prescriptions 
 
-_[...] diagnosis is often challenging in everyday
-practice because the symptoms are non-specific or
-absent, and frequently little attention is paid to the
-issued guidelines._
+???
 
-_[...] there has been a continuing interest in
-defining the incidence and burden of AOM in different
-populations, including those in which the offer and
-coverage of heptavalent pneumococcal conjugate vaccine
-has been considerably heterogeneous_*
-]
+- Otitis media is one of the **most common infections in pediatrics**
+  population.
 
-.footnote[&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;\*Marchisio P. et al. "Burden of acute otitis media in primary care pediatrics in Italy: a secondary data analysis from the Pedianet database", **BMC Pediatrics** 2012.&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;]
+- It is an **inflamamtion with possible fluid accumulation** in the
+  middle ear
 
-
-
-
-
-
-
+- and there is continuing interest in defining the incidence and the
+  burden of acute cases, being one of the main cause of antibiotics
+  prescriptions in children.
+  
+- This is also highlighted by the **chellenges in the diagnoses** and by 
+the **frequently little attention in following the guidlines**, like the
+**wait-and-see approach** that discourage early antibiotics prescription,
+reducing their usage and the adverse events associated with that.
 
 ---
 class: center, middle, inverse
@@ -126,20 +191,23 @@ class: middle
 
 Based on data provided in the EHRs at the visit level, decide if it reports:
 
-&lt;small&gt;
 1. whatever other than an otitis case
+
 1. an otitis case which is not media (whatever severity)
+
 1. a media otitis which is not acute
+
 1. &lt;img src="images/aom.jpg", width = "20%", align = "center"&gt;
   an AOM (w/o tympanic membrane perforation, nor recurrent)
-
+  
 1. &lt;img src="images/aom_perforation.jpg", width = "20%", align = "center"&gt;
   an AOM with tympanic membrane perforation
+
 1. a recurrent AOM
-&lt;/small&gt;
 
+.pull-right[
 .footnote[&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;http://otitismedia.hawkelibrary.com&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;]
-
+]
 
 
 
@@ -153,42 +221,92 @@ class: center, middle, inverse
 
 
 
+---
+class: middle
+
+&lt;img src="images/barbieri2019.png", width = "50%", align = "right"&gt;
+
+&lt;big&gt;
+
+2019 &lt;img src="images/logopedianet.png", width = "20%", align = "center"&gt; investigation
+
+- data from 2010 to 2015 
+
+- **on primary diagnosis only**
+
+Adding even the diaries in a traditional manual human-driven analysis proved to be 
+too costly in terms both of person-time and economic resources
+
+
+It is necessary to develop an **accurate** system able to classify all
+the &lt;img src="images/logopedianet.png", width = "15%", align = "center"&gt; records **automatically** investigating **all the textual
+fields** in the database.
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;\*Barbieri et.al "Antibiotic prescriptions in acute otitis media and pharyngitis in Italian pediatric outpatients", **Italian Journal of Pediatrics** 2019&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+
+
+???
+
+Pedianet was investigated in 2019 by Barbieri et.al\* on data from 
+2010 to 2015 for similar task **on primary diagnosis only**: adding even
+the diaries in a traditional manual human-driven analysis proved to be 
+too costly in terms both of person-time (years) and economic resources
+
+It is necessary to develop an **accurate** system able to classify all
+the Pedianet records **automatically** investigating **all the textual
+fields** in the database.
+
 
 ---
 class: middle
 
-&lt;img src="images/logopedianet.png", width = "20%", align = "center"&gt;
+.center[&lt;img src="images/logopedianet.png", width = "50%"&gt;]
 
+&lt;big&gt;
 **snapshot considerd**: from 1st January 2004 to 23rd August 2017
 
-**records**: `\(6,903,035\)`
+**records**: `\(6,903,035\)` `\((297,373\)` filtered by a search string `\()\)`
 
 **pediatricians**: `\(144\)` (troughout Italy)
 
 **children**: `\(216,976\)`
 
 **fields** (all free-text, Italian-language):
-  - diagnosis
-  - signs-and-symptoms
-  - diary
-  - prescription
-  - visit description
-  - visit result
-
-Investigated in 2012 by Barbieri E. et al. 2018\* on data from 2010 to
-2015 for similar task **on primary diagnosis only**: adding even the 
-diaries in a traditional manual human-driven analysis proved to be too
-costly in terms both of person-time (years) and economic resources
-
-It is necessary to develop a **accurate** system able to classify all
-the Pedianet records **automatically** investigating **all the textual
-fields** in the database.
+- diagnosis
+- signs-and-symptoms
+- diary
+- prescription
+- visit description
+- visit result
 
 
+---
+class: middle, center
 
+&lt;big&gt;&lt;big&gt;
+# Gold Standard
 
+.pull-left[
+## **Train**
+Years: `\(2004-2007\)`
 
+Records: `\(4,926\)`
+]
 
+.pull-right[
+## **Validation**
+Years: `\(2007-2014\)`
+
+Records: `\(723\)`
+]
+
+## **Test**
+Years: `\(2007-2014\)`
+
+Records: `\(880\)`
+
+&lt;small&gt;
+(NOTE: 4 months of annotatotion, by 2 independent experts)
 
 
 ---
@@ -202,8 +320,8 @@ class: center, middle, inverse
 class: middle
 
 Gold-standard definition:
-  - two independent expert annotators (weighted Cohen''s Kappa = `\(0.89\)`)
-  - one pediatrician specialized in infectious diseases decided on the differences:*
+  - two independent expert annotators (weighted Cohen's Kappa = `\(0.89\)`)
+  - one pediatrician specialized in infectious diseases decided where the experts shown disagreement:*
 
 Expert annotators | Accuracy [%] | Balanced F1 [%]
 :--------------: | :----------: | :-------------:
@@ -214,7 +332,7 @@ Expert annotators | Accuracy [%] | Balanced F1 [%]
 
 `\(\text{Accuracy} = \frac{|\text{true positives}|}{|\text{records}|}\)`
 
-`\(\text{Balanced F1} = \frac{\text{balanced precision} * \text{balanced recall}}{\text{balanced precision} + \text{balanced recall}}\)`
+`\(\text{Balanced F1} = \frac{\text{balanced precision} \cdot \text{balanced recall}}{\text{balanced precision} + \text{balanced recall}}\)`
 
 `\(\text{Balanced precision} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true positives in }i|}{|\text{labelled like }i|}}{|\text{classes}|}\)`
 
@@ -285,12 +403,12 @@ class: middle
 
 Network          | Balanced&lt;br&gt;precision | Balanced&lt;br&gt;recall |  Accuracy | Balanced&lt;br&gt;F1
 ---------------- | :-------------------: | :----------------: |  :------: | :------------:
-Simple embedding |         84.51         |        68.63       |   81.70   |      75.75
-single kernel    |         92.60         |       _91.87_      |   94.66   |     _92.23_
-sequential CNN   |        _95.94_        |        81.26       |   93.64   |      87.99
-parallel CNN     |       **96.95**       |       _94.78_      | **96.59** |    **95.86**
-deep CNN         |       **96.38**       |       _93.36_      | **96.25** |    **94.85**
-Ensemble&lt;br&gt;(w/o simple embeddings)|**97.03**|   _93.97_      | **96.59** |    **95.47**
+Simple Embedding |         84.51         |        68.63       |   81.70   |      75.75
+Single Kernel    |         92.60         |       _91.87_      |   94.66   |     _92.23_
+Sequential CNN   |        _95.94_        |        81.26       |   93.64   |      87.99
+Parallel CNN     |       **96.95**       |       _94.78_      | **96.59** |    **95.86**
+Deep CNN         |       **96.38**       |       _93.36_      | **96.25** |    **94.85**
+Ensemble&lt;br&gt;(w/o Simple Embeddings)|**97.03**|   _93.97_      | **96.59** |    **95.47**
 
 .pull-right[
   \* **Bold face** = over the maximum &lt;br&gt;
@@ -312,37 +430,13 @@ Ensemble&lt;br&gt;(w/o simple embeddings)|**97.03**|   _93.97_      | **96.59** 
 
 ---
 class: center, middle, inverse
-# **Conclusions**
-
-
-
-
----
-class: middle
-
-- Potential of deep learning models in identifying and classifying
-  diagnosis from free text
-  
-- Could be adopted in other health care databases
-- Can improve healthcare research limiting human errors and time
-  speeding databases interrogations
-
-
-
-
-
-
-
-
----
-class: center, middle, inverse
 # **Final remarks**
 
 
 
 
 ---
-class: middle, center
+class: middle
 
 .pull-left[
 # Strenghts
@@ -357,13 +451,45 @@ class: middle, center
 
 .pull-right[
 # Weakness
-- human-performance not based on professionals levels
-- missing computational power (i.e, GPUs) for
-  - Recurrent networks
+- our human-performance estimation is not based at the professional levels
+- missing computational power (i.e, GPUs) for deeper networks, e.g., 
+
+  - Recurrent
+
   - BERT
+
   - XLNet
-  - ...
 ]
+
+
+
+---
+class: center, middle, inverse
+# **Conclusions**
+
+
+
+
+---
+class: middle
+
+# Deep Learning Approach to Text-Mining EHR
+
+- Can be used to identifying and classifying diagnosis from (huge
+  ammount of) free text
+  
+- Similar quality respect human-performances
+
+- Trained models can be adopted on other health care databases with
+respect to the original one
+
+- It can improve healthcare research limiting human errors and time,
+speeding up databases interrogations
+
+
+
+
+
 
 
 
@@ -372,9 +498,12 @@ class: middle, center
 class: center, middle, inverse
 &lt;br&gt;
 &lt;br&gt;
+&lt;br&gt;
 
-# **Thank you all&lt;br&gt;for the attention&lt;br&gt;the hospitality&lt;br&gt;&lt;br&gt;and to have made all this possible!**&lt;br&gt;&lt;br&gt;&lt;br&gt; (Questions?)
+# **Thank you&lt;br&gt;for the attention**&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; Questions?
 
+&lt;br&gt;
+&lt;br&gt;
 &lt;br&gt;
 
 &lt;small&gt;&lt;small&gt;&lt;small&gt;Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan) powered by [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
