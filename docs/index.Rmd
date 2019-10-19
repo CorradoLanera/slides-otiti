@@ -387,11 +387,7 @@ class: center, middle, inverse
 ---
 class: top
 
-<img src="images/200.png", width = "14%", align = "top">
-<img src="images/310.png", width = "14%", align = "top">
-<img src="images/320.png", width = "13.5%", align = "top">
-<img src="images/330.png", width = "25%", align = "top">
-<img src="images/340.png", width = "24.5%", align = "top">
+<img src="images/architectures.png", width = "90%", align = "center">
 
 
 
